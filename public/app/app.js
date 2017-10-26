@@ -1,0 +1,1 @@
+var app = angular.module('memberRecords', ['ngFileUpload']).constant('API_URL', 'http://localhost/TestApp3/public/');

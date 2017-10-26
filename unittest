@@ -1,0 +1,17 @@
+vendor/bin/phpunit --filter "testAddMemberSuccess" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddMemberSuccessHasPhoto" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testGetListMember" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testEdit" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testUpdate" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testUpdateHasPhoto" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testDeleteMember" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testDeleteMemberFails" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddName99Charaters" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddNameNull" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddAddress300Charaters" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddAddressNull" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testEditName100Charaters" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testEditAddress300Charaters" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddPhotoLessthan10MB" tests/Feature/unittest.php
+vendor/bin/phpunit --filter "testAddNamemorethan100Charaters" tests/Feature/AddMemberTest.php
+
