@@ -6,6 +6,7 @@
 	<!-- Latest compiled and minified CSS & JS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<script src="//code.jquery.com/jquery.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -20,14 +21,21 @@
 		.col-sm-6{
 			padding: 0;
 		}
+		img{
+			min-width: 150px;
+		}
+		textarea{
+			resize: none;
+		}
+		
 	</style>
 </head>
 <body>
 	<div class="container" ng-controller="MemberController">
 		<h2>MEMBER</h2>
 		<button type="button" class="btn btn-primary" ng-click="create()"><i class="fa fa-plus" aria-hidden="true"></i></button>
-			<div class="table-responsive">
-				<table class="table table-hover table-bordered">
+			<div class="" style="margin-top: 1%">
+				<table class="table table-hover table-responsive table-bordered">
 					<thead>
 						<tr>
 							<th ng-click="propertyName ='id';sortBy('id')" >ID</th>
@@ -41,13 +49,20 @@
 					<tbody>
 						<tr ng-repeat=" member in members |orderBy:propertyName:reverse">
 							<td>@{{member.id}}</td>
-							<td>@{{member.name}}</td>
-							<td>@{{member.address}}</td>
-							<td>@{{member.age}}</td>
-							<td style="width: 30%"><img ng-src="@{{member.photo}}"></td>
 							<td style="width: 10%;">
-								<button type="button" class="btn btn-warning" ng-click="update(member.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-danger" ng-click="delete(member.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+								<p style="word-wrap: break-word;" class="name">@{{member.name}}</p>					
+							</td>
+							<td style="width: 40%;" class="address">
+								<p style="word-wrap: break-word;" class="address">@{{member.address}}</p>		
+							</td>
+							<td>@{{member.age}}</td>
+							<td style="width: 15%"><img style="width: 150px; height: 150px; margin: 0 auto" class="img-responsive"  ng-src="@{{member.photo}}"></td>
+							<td style="width: 5%;">
+								<div style="margin-top: 55%">
+									<button type="button" style="margin-bottom: 5%;" class="btn btn-warning" ng-click="update(member.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+									<button type="button" class="btn btn-danger" ng-click="delete(member.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+								</div>
+								
 							</td>
 						</tr>
 					</tbody>
@@ -65,7 +80,7 @@
 							
 							<div class="form-group">
 								<label for="">NAME</label>
-								<input type="text" class="form-control" id="name" placeholder="Input field" name="name"  ng-pattern="regex"  ng-maxlength="100" ng-model="member.name"  ng-required="true">
+								<input type="text" class="form-control" id="name" placeholder="Input name" name="name"  ng-pattern="regex"  ng-maxlength="100" ng-model="member.name"  ng-required="true">
 								<div ng-show="frmcreatemember.name.$dirty && frmcreatemember.name.$invalid" >
 									<span style="color: red" ng-show="frmcreatemember.name.$error.required">The Name is required and cannot be empty</span>
 									<span style="color: red" ng-show="frmcreatemember.name.$error.maxlength">The Name must be less than 100 characters</span><br>
@@ -77,7 +92,7 @@
 
 							<div class="form-group">
 								<label for="">ADDRESS</label>
-								<input type="text" class="form-control" id="address" placeholder="Input field" name="address" ng-maxlength="300" ng-model="member.address"  ng-required="true">
+								<textarea type="text" class="form-control" id="address" rows="5" placeholder="Input address" name="address" ng-maxlength="300" ng-model="member.address"  ng-required="true"></textarea>
 								<div ng-show="frmcreatemember.address.$dirty && frmcreatemember.address.$invalid" >
 									<span style="color: red" ng-show="frmcreatemember.address.$error.required">The address is required and cannot be empty</span>
 									<span style="color: red" ng-show="frmcreatemember.address.$error.maxlength">The address must be less than 300 characters</span><br>
@@ -86,7 +101,7 @@
 
 							<div class="form-group">
 								<label for="">AGE</label>
-								<input type="text" class="form-control" id="age" placeholder="Input field" name="age"  ng-pattern="/^[0-9]*$/" ng-maxlength="2" ng-model="member.age"  ng-required="true">
+								<input type="text" class="form-control" id="age" placeholder="Input age" name="age"  ng-pattern="/^[0-9]*$/" ng-maxlength="2" ng-model="member.age"  ng-required="true">
 
 								<div ng-show="frmcreatemember.age.$dirty && frmcreatemember.age.$invalid" >
 									<span style="color: red" ng-show="frmcreatemember.age.$error.required">The age is required and cannot be empty</span>
@@ -149,7 +164,7 @@
 						
 							<div class="form-group">
 								<label for="">NAME</label>
-								<input type="text" class="form-control" id="name" placeholder="Input field" name="name" ng-model="member.name" ng-pattern="regex" ng-maxlength="100" ng-required="true">
+								<input type="text" class="form-control" id="name" placeholder="Input name" name="name" ng-model="member.name" ng-pattern="regex" ng-maxlength="100" ng-required="true">
 
 								<div ng-show="frmeditmember.name.$dirty && frmeditmember.name.$invalid" >
 									<span style="color: red" ng-show="frmeditmember.name.$error.required">The Name is required and cannot be empty</span>
@@ -161,8 +176,7 @@
 
 							<div class="form-group">
 								<label for="">ADDRESS</label>
-								<input type="text" class="form-control" id="address" placeholder="Input field" name="address" value="@{{address}}" ng-model="member.address" ng-maxlength="300"  ng-required="true">
-
+								<textarea type="text" class="form-control" id="address" rows="5" placeholder="Input address" name="address" value="@{{address}}" ng-model="member.address" ng-maxlength="300"  ng-required="true"></textarea>
 								<div ng-show="frmeditmember.address.$dirty && frmeditmember.address.$invalid" >
 									<span style="color: red" ng-show="frmeditmember.address.$error.required">The address is required and cannot be empty</span>
 									<span style="color: red" ng-show="frmeditmember.address.$error.maxlength">The address must be less than 300 characters</span><br>
@@ -172,7 +186,7 @@
 
 							<div class="form-group">
 								<label for="">AGE</label>
-								<input type="text" class="form-control" id="age" placeholder="Input field" name="age" value="@{{age}}" ng-model="member.age" ng-maxlength="2" ng-pattern="/^[0-9]*$/" ng-required="true">
+								<input type="text" class="form-control" id="age" placeholder="Input age" name="age" value="@{{age}}" ng-model="member.age" ng-maxlength="2" ng-pattern="/^[0-9]*$/" ng-required="true">
 
 								<div ng-show="frmeditmember.age.$dirty && frmeditmember.age.$invalid" >
 									<span style="color: red" ng-show="frmeditmember.age.$error.required">The age is required and cannot be empty</span>

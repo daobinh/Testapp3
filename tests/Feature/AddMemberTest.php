@@ -26,17 +26,26 @@ class AddMemberTest extends TestCase
         $response = $this->call('POST', '/member', $request);
         if($response->status() == 302){
             print_r($response->exception->validator->messages()->messages());
+
+            $this->assertDatabaseMissing('members', [
+            'name' => $request['name'],
+            'address' => $request['address'],
+            'age' => $request['age'],
+        ]);
+
         }
         else{
             $this->assertEquals(200, $response->status());
-        }
-        
-        $this->assertDatabaseHas('members',
+
+            $this->assertDatabaseHas('members',
             [
                 'name' => $request['name'],
                 'address' => $request['address'],
                 'age' => $request['age'],
             ]);
+        }
+        
+        
     }
 
     public function testAddMemberSuccessHasPhoto()
@@ -67,14 +76,8 @@ class AddMemberTest extends TestCase
             'age' => 23,
         ];
         $response = $this->call('POST', '/member', $request);
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-        }
+
+        $this->assertEquals(302, $response->status());
         
         $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
@@ -94,15 +97,8 @@ class AddMemberTest extends TestCase
             'age' => 23,
         ];
         $response = $this->call('POST', '/member', $request);
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-        }
-        
+        $this->assertEquals(302, $response->status());
+ 
         $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
             'address' => $request['address'],
@@ -111,7 +107,24 @@ class AddMemberTest extends TestCase
 
     }
 
-    public function testAddName100Charaters()
+    public function testAddNameEqual99Charaters()
+    {
+        $request = [
+            'name' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabc',
+            'address' => 'HN',
+            'age' => 23,
+        ];
+        $response = $this->call('POST', '/member', $request);
+        $this->assertEquals(200, $response->status());
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $request['name'],
+                'address' => $request['address'],
+                'age' => $request['age'],
+            ]);
+    }
+
+    public function testAddNameEqual100Charaters()
     {
         $request = [
             'name' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabca',
@@ -128,23 +141,14 @@ class AddMemberTest extends TestCase
             ]);
     }
 
-    public function testAddNamemorethan100Charaters(){
+    public function testAddNameEqual101Charaters(){
         $request = [
             'name' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcab',
             'address' => 'HN',
             'age' => 23,
         ];
         $response = $this->call('POST', '/member', $request);
-
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-            
-        }
+        $this->assertEquals(302, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request['name'],
@@ -154,6 +158,40 @@ class AddMemberTest extends TestCase
         
     }
 
+
+    public function testAddAddressNull()
+    {
+        $request = [
+            'name' => 'binh',
+            'address' => '',
+            'age' => 23,
+        ];
+        $response = $this->call('POST', '/member', $request);
+        $this->assertEquals(302, $response->status());
+        $this->assertDatabaseMissing('members', [
+            'name' => $request['name'],
+            'address' => $request['address'],
+            'age' => $request['age'],
+        ]);
+
+    }
+
+    public function testAddAddressEqual299Characters(){
+        $request = [
+            'name' => 'binh',
+            'address' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabc',
+            'age' => 23,
+        ];
+        $response = $this->call('POST', '/member', $request);
+        $this->assertEquals(200, $response->status());
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $request['name'],
+                'address' => $request['address'],
+                'age' => $request['age'],
+            ]);
+        
+    }
 
     public function testAddAddressEqual300Charaters()
     {
@@ -173,48 +211,14 @@ class AddMemberTest extends TestCase
             ]);
     }
 
-    public function testAddAddressNull()
-    {
-        $request = [
-            'name' => 'binh',
-            'address' => '',
-            'age' => 23,
-        ];
-        $response = $this->call('POST', '/member', $request);
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-        }
-        
-        $this->assertDatabaseMissing('members', [
-            'name' => $request['name'],
-            'address' => $request['address'],
-            'age' => $request['age'],
-        ]);
-
-    }
-
-    public function testAddAddressmorethan300Characters(){
+    public function testAddAddressEqual301Characters(){
         $request = [
             'name' => 'binh',
             'address' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaa',
             'age' => 23,
         ];
         $response = $this->call('POST', '/member', $request);
-
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-            
-        }
+        $this->assertEquals(302, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request['name'],
@@ -232,15 +236,8 @@ class AddMemberTest extends TestCase
             'age' => '',
         ];
         $response = $this->call('POST', '/member', $request);
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-        }
-        
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
             'address' => $request['address'],
@@ -256,16 +253,8 @@ class AddMemberTest extends TestCase
             'age' => 'ab',
         ];
         $response = $this->call('POST', '/member', $request);
+        $this->assertEquals(302, $response->status());
 
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-            
-        }
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request['name'],
@@ -282,16 +271,8 @@ class AddMemberTest extends TestCase
             'age' => 123,
         ];
         $response = $this->call('POST', '/member', $request);
+        $this->assertEquals(302, $response->status());
 
-        if ($response->status() == 302) 
-        {
-            print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-            $this->assertEquals(200, $response->status());
-            
-        }
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request['name'],
@@ -311,23 +292,16 @@ class AddMemberTest extends TestCase
             'photo' => $photo
         ];
        $response = $this->call('POST', '/member', $request);
-       if ($response->status() == 302) 
-       {
-           print_r($response->exception->validator->messages()->messages());
-       }
-       else
-       {
-        $this->assertEquals(200, $response->status());
-       }
-       
-       $this->assertDatabaseMissing('members', [
+        $this->assertEquals(302, $response->status());
+
+        $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
             'address' => $request['address'],
             'age' => $request['age'],
         ]);
     }
 
-    public function testAddPhotoTypebmp(){
+    public function testAddPhotoDifferentType(){
         copy('photo\anhtest.bmp','public\photo\anhtest.bmp');   
         $photo = new UploadedFile(base_path('public\photo\anhtest.bmp'),
             'anhtest.bmp', 'anhtest.bmp', 111, $error = null, $test = true);
@@ -338,42 +312,14 @@ class AddMemberTest extends TestCase
             'photo' => $photo
         ];
        $response = $this->call('POST', '/member', $request);
-       if ($response->status() == 302) 
-       {
-           print_r($response->exception->validator->messages()->messages());
-       }
-       else
-       {
-        $this->assertEquals(200, $response->status());
-       }
-       
+        $this->assertEquals(302, $response->status());
+
        $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
             'address' => $request['address'],
             'age' => $request['age'],
         ]);
     }
-
-    // public function testAddPhotoLessthan10MB(){
-    //     copy('photo\images.jpg','public\photo\images.jpg');   
-    //     $photo = new UploadedFile(base_path('public\photo\images.jpg'),
-    //         'images.jpg', 'image/jpg', 111, $error = null, $test = true);
-    //     $request = [
-    //         'name' => 'binh',
-    //         'address' => 'thanh hoa',
-    //         'age' => 23,
-    //         'photo' => $photo
-    //     ];
-    //    $response = $this->call('POST', '/member', $request);
-    //    // dd($response->status());
-    //    $this->assertEquals(200, $response->status());
-    //    $this->assertDatabaseMissing('members', [
-    //         'name' => $request['name'],
-    //         'address' => $request['address'],
-    //         'age' => $request['age'],
-    //         'photo' => $request['photo']
-    //     ]);
-    // }
 
     public function testAddPhotoMax10MB(){
         copy('photo\image10MB.jpg','public\photo\image10MB.jpg');   
@@ -386,16 +332,9 @@ class AddMemberTest extends TestCase
             'photo' => $photo
         ];
        $response = $this->call('POST', '/member', $request);
-       if ($response->status() == 302) 
-       {
-           print_r($response->exception->validator->messages()->messages());
-       }
-       else
-       {
-        $this->assertEquals(200, $response->status());
-       }
-       
-       $this->assertDatabaseMissing('members', [
+        $this->assertEquals(302, $response->status());
+
+        $this->assertDatabaseMissing('members', [
             'name' => $request['name'],
             'address' => $request['address'],
             'age' => $request['age'],

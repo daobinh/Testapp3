@@ -1,2 +1,2 @@
-// var app = angular.module('memberRecords', ['ngFileUpload']).constant('API_URL', 'http://localhost/TestApp3/public/');
-var app = angular.module('memberRecords', ['ngFileUpload']).constant('API_URL', 'http://150.95.104.173/');
+var url = window.location.origin
+var app = angular.module('memberRecords', ['ngFileUpload']).constant('API_URL', url +'/');

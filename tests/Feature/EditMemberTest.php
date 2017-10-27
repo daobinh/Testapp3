@@ -38,13 +38,27 @@ class EditMemberTest extends TestCase
 
         $response = $this->call('POST',
             route('member.update', ['id' => $request->id]), $editMember);
-        $this->assertEquals(200, $response->status());
-        $this->assertDatabaseHas('members',
+        if ($response->status() == 302) 
+        {
+            print_r($response->exception->validator->messages()->messages());
+             $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
                 'address' => $editMember['address'],
                 'age' => $editMember['age'],
             ]);
+        }
+        else
+        {
+            $this->assertEquals(200, $response->status());
+            $this->assertDatabaseHas('members',
+                [
+                    'name' => $editMember['name'],
+                    'address' => $editMember['address'],
+                    'age' => $editMember['age'],
+                ]);
+        }
+        
        
     }
 
@@ -69,13 +83,26 @@ class EditMemberTest extends TestCase
 
         $response = $this->call('POST',
             route('member.update', ['id' => $request->id]), $editMember);
-        $this->assertEquals(200, $response->status());
-        $this->assertDatabaseHas('members',
+        if ($response->status() == 302) 
+        {
+            print_r($response->exception->validator->messages()->messages());
+             $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
                 'address' => $editMember['address'],
                 'age' => $editMember['age'],
             ]);
+        }
+        else
+        {
+            $this->assertEquals(200, $response->status());
+            $this->assertDatabaseHas('members',
+                [
+                    'name' => $editMember['name'],
+                    'address' => $editMember['address'],
+                    'age' => $editMember['age'],
+                ]);
+        }
     }
 
     public function testEditNameNull()
@@ -91,17 +118,10 @@ class EditMemberTest extends TestCase
             'age' => 21,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
         
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
@@ -124,16 +144,9 @@ class EditMemberTest extends TestCase
             'age' => 21,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+
+        $this->assertEquals(302, $response->status());
         
         $this->assertDatabaseMissing('members',
             [
@@ -144,7 +157,57 @@ class EditMemberTest extends TestCase
        
     }
 
-    public function testEditNameMorethan100Character()
+    public function testEditNameEqual99Character()
+    {
+        $request = Factory(Member::class)->create([
+            'name' => 'RomeCody',
+            'address' => 'NamTuLiem,HaNoi',
+            'age' => 23,
+        ]);
+        $editMember = [
+            'name' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabca',
+            'address' => 'thanh hoa',
+            'age' => 21,
+        ];
+
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        $this->assertEquals(200, $response->status());
+
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $editMember['name'],
+                'address' => $editMember['address'],
+                'age' => $editMember['age'],
+            ]);
+       
+    }
+
+    public function testEditNameEqual100Character()
+    {
+        $request = Factory(Member::class)->create([
+            'name' => 'RomeCody',
+            'address' => 'NamTuLiem,HaNoi',
+            'age' => 23,
+        ]);
+        $editMember = [
+            'name' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabca',
+            'address' => 'thanh hoa',
+            'age' => 21,
+        ];
+
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        $this->assertEquals(200, $response->status());
+
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $editMember['name'],
+                'address' => $editMember['address'],
+                'age' => $editMember['age'],
+            ]);
+       
+    }
+
+    public function testEditNameEqual101Character()
     {
         $request = Factory(Member::class)->create([
             'name' => 'RomeCody',
@@ -157,17 +220,9 @@ class EditMemberTest extends TestCase
             'age' => 21,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
-        
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
@@ -190,17 +245,9 @@ class EditMemberTest extends TestCase
             'age' => 21,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
-        
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
@@ -210,7 +257,59 @@ class EditMemberTest extends TestCase
        
     }
 
-    public function testEditAddressMorethan300Character()
+    public function testEditAddressEqual299Character()
+    {
+        $request = Factory(Member::class)->create([
+            'name' => 'RomeCody',
+            'address' => 'NamTuLiem,HaNoi',
+            'age' => 23,
+        ]);
+        $editMember = [
+            'name' => 'Binh',
+            'address' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabc',
+            'age' => 21,
+        ];
+
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        
+        $this->assertEquals(200, $response->status());
+
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $editMember['name'],
+                'address' => $editMember['address'],
+                'age' => $editMember['age'],
+            ]);
+       
+    }
+
+    public function testEditAddressEqual300Character()
+    {
+        $request = Factory(Member::class)->create([
+            'name' => 'RomeCody',
+            'address' => 'NamTuLiem,HaNoi',
+            'age' => 23,
+        ]);
+        $editMember = [
+            'name' => 'Binh',
+            'address' => 'abcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabcaabcabcabca',
+            'age' => 21,
+        ];
+
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        
+        $this->assertEquals(200, $response->status());
+
+        $this->assertDatabaseHas('members',
+            [
+                'name' => $editMember['name'],
+                'address' => $editMember['address'],
+                'age' => $editMember['age'],
+            ]);
+       
+    }
+
+    public function testEditAddressEqual301Character()
     {
         $request = Factory(Member::class)->create([
             'name' => 'RomeCody',
@@ -223,17 +322,10 @@ class EditMemberTest extends TestCase
             'age' => 21,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
         
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
@@ -256,16 +348,9 @@ class EditMemberTest extends TestCase
             'age' => '',
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+
+        $this->assertEquals(302, $response->status());
         
         $this->assertDatabaseMissing('members',
             [
@@ -289,17 +374,9 @@ class EditMemberTest extends TestCase
             'age' => 'ab',
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
-        
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        $this->assertEquals(302, $response->status());
+
         $this->assertDatabaseMissing('members',
             [
                 'name' => $editMember['name'],
@@ -322,16 +399,9 @@ class EditMemberTest extends TestCase
             'age' => 212,
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-        	print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-        }
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+
+        $this->assertEquals(302, $response->status());
         
         $this->assertDatabaseMissing('members',
             [
@@ -359,17 +429,10 @@ class EditMemberTest extends TestCase
             'photo' => $photo
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-        if ($response->status() == 302) 
-        {
-           print_r($response->exception->validator->messages()->messages());
-        }
-        else
-        {
-        	$this->assertEquals(200, $response->status());
-       	}
-       
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+
+        $this->assertEquals(302, $response->status());
+
        	$this->assertDatabaseMissing('members', [
             'name' => $editMember['name'],
             'address' => $editMember['address'],
@@ -377,7 +440,7 @@ class EditMemberTest extends TestCase
         ]);
     }
 
-    public function testEditPhotoTypebmp(){
+    public function testEditPhotoDifferentType(){
         copy('photo\anhtest.bmp','public\photo\anhtest.bmp');   
         $photo = new UploadedFile(base_path('public\photo\anhtest.bmp'),
             'anhtest.bmp', 'anhtest.bmp', 111, $error = null, $test = true);
@@ -394,16 +457,9 @@ class EditMemberTest extends TestCase
             'photo' => $photo
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-       	if ($response->status() == 302) 
-       	{
-           print_r($response->exception->validator->messages()->messages());
-       	}
-       	else
-       	{
-        	$this->assertEquals(200, $response->status());
-       	}
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+        
+        $this->assertEquals(302, $response->status());
        
        	$this->assertDatabaseMissing('members', [
             'name' => $editMember['name'],
@@ -429,16 +485,9 @@ class EditMemberTest extends TestCase
             'photo' => $photo
         ];
 
-        $response = $this->call('POST',
-            route('member.update', ['id' => $request->id]), $editMember);
-       	if ($response->status() == 302) 
-       	{
-           print_r($response->exception->validator->messages()->messages());
-       	}
-       	else
-       	{
-        	$this->assertEquals(200, $response->status());
-       	}
+        $response = $this->call('POST',route('member.update', ['id' => $request->id]), $editMember);
+
+        $this->assertEquals(302, $response->status());
        
        	$this->assertDatabaseMissing('members', [
             'name' => $editMember['name'],
