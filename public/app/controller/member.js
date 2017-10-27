@@ -30,14 +30,12 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 	
 	$scope.create = function(){
 		$('#modal-create').modal({
-
         	backdrop: 'static',
         });
         document.getElementById("frmcreate").reset();
         $scope.files = null;
 		$scope.frmcreatemember.$setPristine();
 
-		console.log(API_URL);
 	}
 
 	$scope.saveNewMember = function(){
@@ -88,9 +86,13 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 		$http.get(API_URL + 'member/' + id).success(function(response){
 			$scope.member = response;	
 		});
+
 		$('#modal-edit').modal({
         	backdrop: 'static',
+
         });
+		$scope.files = null;
+		$scope.frmcreatemember.$setPristine();
 
 	}
 
