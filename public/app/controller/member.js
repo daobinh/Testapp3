@@ -23,6 +23,45 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 	$scope.regex = /^[a-zA-Z]+$/;
 	$scope.regexImage = "image/png,image/jpg,image/gif,image/jpeg";
 
+/*pagination*/
+	// $scope.itemsPerPage = 5;
+	// $scope.currentPage = 0;
+	// $scope.items = [];
+
+ //  for (var i=0; i<50; i++) {
+ //    $scope.items.push({
+ //      id: i, name: "name "+ i, description: "description " + i
+ //    });
+ //  }
+ //  $scope.pageChanged = function(newPage) {
+ //        getResultsPage(newPage);
+ //    };
+ //  $scope.prevPage = function() {
+ //    if ($scope.currentPage > 0) {
+ //      $scope.currentPage--;
+ //    }
+ //  };
+
+ //  $scope.prevPageDisabled = function() {
+ //    return $scope.currentPage === 0 ? "disabled" : "";
+ //  };
+
+ //  $scope.pageCount = function() {
+ //    return Math.ceil($scope.items.length/$scope.itemsPerPage)-1;
+ //  };
+
+ //  $scope.nextPage = function() {
+ //    if ($scope.currentPage < $scope.pageCount()) {
+ //      $scope.currentPage++;
+ //    }
+ //  };
+
+ //  $scope.nextPageDisabled = function() {
+ //    return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
+ //  };
+
+
+/*end pagination*/
 
 	$http.get(API_URL + 'members').success(function(response){
 		$scope.members = response;
@@ -37,6 +76,8 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
         document.getElementById("frmcreate").reset();
         $scope.files = null;
 		$scope.frmcreatemember.$setPristine();
+
+		console.log(API_URL);
 	}
 
 	$scope.saveNewMember = function(){
@@ -181,9 +222,14 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 	    $scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 	    $scope.propertyName = propertyName;
 	  };
-	// $scope.resetform = function(){
-	// 	document.getElementById("frmcreate").reset();
-		
 
-	// }
-})
+
+});
+
+app.filter('offset', function() {
+  return function(input, start) {
+  	if (!input || !input.length) { return; }
+    start = parseInt(start, 10);
+    return input.slice(start);
+  };
+});
