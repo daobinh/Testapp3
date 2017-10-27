@@ -176,7 +176,7 @@
 
 							<div class="form-group">
 								<label for="">ADDRESS</label>
-								<textarea type="text" class="form-control" id="address" rows="5" placeholder="Input address" name="address" value="@{{address}}" ng-model="member.address" ng-maxlength="300"  ng-required="true"></textarea>
+								<textarea type="text" class="form-control" id="address" rows="5"  placeholder="Input address" name="address" value="@{{address}}" ng-model="member.address" ng-maxlength="300"  ng-required="true"></textarea>
 								<div ng-show="frmeditmember.address.$dirty && frmeditmember.address.$invalid" >
 									<span style="color: red" ng-show="frmeditmember.address.$error.required">The address is required and cannot be empty</span>
 									<span style="color: red" ng-show="frmeditmember.address.$error.maxlength">The address must be less than 300 characters</span><br>

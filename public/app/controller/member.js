@@ -22,46 +22,7 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 
 	$scope.regex = /^[a-zA-Z]+$/;
 	$scope.regexImage = "image/png,image/jpg,image/gif,image/jpeg";
-
-/*pagination*/
-	// $scope.itemsPerPage = 5;
-	// $scope.currentPage = 0;
-	// $scope.items = [];
-
- //  for (var i=0; i<50; i++) {
- //    $scope.items.push({
- //      id: i, name: "name "+ i, description: "description " + i
- //    });
- //  }
- //  $scope.pageChanged = function(newPage) {
- //        getResultsPage(newPage);
- //    };
- //  $scope.prevPage = function() {
- //    if ($scope.currentPage > 0) {
- //      $scope.currentPage--;
- //    }
- //  };
-
- //  $scope.prevPageDisabled = function() {
- //    return $scope.currentPage === 0 ? "disabled" : "";
- //  };
-
- //  $scope.pageCount = function() {
- //    return Math.ceil($scope.items.length/$scope.itemsPerPage)-1;
- //  };
-
- //  $scope.nextPage = function() {
- //    if ($scope.currentPage < $scope.pageCount()) {
- //      $scope.currentPage++;
- //    }
- //  };
-
- //  $scope.nextPageDisabled = function() {
- //    return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
- //  };
-
-
-/*end pagination*/
+	
 
 	$http.get(API_URL + 'members').success(function(response){
 		$scope.members = response;
