@@ -14,7 +14,9 @@
 Route::get('/', function () {
     return view('list');
 });
-
+Route::get('test', function() {
+    echo "xxxx";
+});
 Route::resource('member', 'MemberController');
 
 Route::get('members/{id?}', 'MemberController@getlist');

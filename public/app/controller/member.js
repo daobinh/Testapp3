@@ -22,7 +22,6 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 
 	$scope.regex = /^[a-zA-Z]+$/;
 	$scope.regexImage = "image/png,image/jpg,image/gif,image/jpeg";
-	
 
 	$http.get(API_URL + 'members').success(function(response){
 		$scope.members = response;
