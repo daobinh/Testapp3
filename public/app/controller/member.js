@@ -6,9 +6,10 @@ app.directive('fileModel', ['$parse',function ($parse) {
 			var modelSetter = model.assign;
 
 			iElement.bind('change', function() {
-
-				scope.$apply(function(){
+				scope.$apply(function(){				
 					modelSetter(scope,iElement[0].files[0])
+					$('#error').html('');
+					$('#modal-edit').html('');
 				});
 			});
 
@@ -33,7 +34,9 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
         	backdrop: 'static',
         });
         document.getElementById("frmcreate").reset();
+        $scope.member = null;
         $scope.files = null;
+        $scope.myFile = null;
 		$scope.frmcreatemember.$setPristine();
 
 	}
@@ -44,7 +47,6 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 		if ($scope.myFile == undefined) {
 				$scope.myFile = '';
 			}
-		console.log($scope.myFile);
 		if ($scope.frmcreatemember.$valid) {
 
 			data_value = {
@@ -77,6 +79,13 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 
 				$('#modal-create').modal('hide');
 			})
+			.error(function(response) {
+				var data = response;
+				angular.forEach(data, function(value, key) {
+					$('#error').html(value['photo']);
+					  	
+				});
+			});
 		}
 	}
 
@@ -91,6 +100,8 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
         	backdrop: 'static',
 
         });
+        
+        $scope.myFile = null;
 		$scope.files = null;
 		$scope.frmcreatemember.$setPristine();
 
@@ -126,6 +137,7 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 
 					$('#modal-edit').modal('hide');
 				})
+				
 			}
 		}
 		else{
@@ -157,6 +169,14 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 
 					$('#modal-edit').modal('hide');
 				})
+				.error(function(response) {
+
+					var data = response;
+					angular.forEach(data, function(value, key) {
+					$('#error-edit').html(value['photo']);
+						  	
+					});
+				});
 			}
 		}
 		
@@ -186,12 +206,4 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
 	  };
 
 
-});
-
-app.filter('offset', function() {
-  return function(input, start) {
-  	if (!input || !input.length) { return; }
-    start = parseInt(start, 10);
-    return input.slice(start);
-  };
 });

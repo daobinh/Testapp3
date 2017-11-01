@@ -46,7 +46,6 @@ class MemberController extends Controller
      */
     public function store(MemberCreateRequest $request)
     {
-        // dd($request->all());
         $members = new Member;
         $members->name = $request->name;
         $members->address = $request->address;
@@ -61,11 +60,12 @@ class MemberController extends Controller
             }
             $members->photo = 'photo/' .$photo_name;
         }
+        else{
+            $members->photo = 'photo/notimage.png';
+        }
         
-
         $members->save();
-        // dd($members);
-        // return 'success add';
+
     }
 
     /**
@@ -102,8 +102,7 @@ class MemberController extends Controller
 
         $members = Member::where('id',$id);
 
-        
-
+    
         if (!empty($request->photo)) {
             if ($request->hasFile('photo')) {
             
@@ -121,7 +120,7 @@ class MemberController extends Controller
             }
         
         else{
-            
+
             $members->update(['name' => $request->name, 'address' => $request->address, 'age' => $request->age]);
         }
     

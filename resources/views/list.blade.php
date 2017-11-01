@@ -56,9 +56,11 @@
 								<p style="word-wrap: break-word;" class="address">@{{member.address}}</p>		
 							</td>
 							<td>@{{member.age}}</td>
-							<td style="width: 15%"><img style="width: 150px; height: 150px; margin: 0 auto" class="img-responsive"  ng-src="@{{member.photo}}"></td>
+							<td style="width: 15%">
+								<img style="width: 120px; height: 120px; margin: 0 auto" class="img-responsive"  ng-src="@{{member.photo}}">
+							</td>
 							<td style="width: 5%;">
-								<div style="margin-top: 55%">
+								<div style="margin-top: 45%; margin-left: 15%">
 									<button type="button" style="margin-bottom: 5%;" class="btn btn-warning" ng-click="update(member.id)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 									<button type="button" class="btn btn-danger" ng-click="delete(member.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
 								</div>
@@ -138,15 +140,19 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						@if ($errors->any())
+						<div id="error" style="text-align: left; color: red">
+							
+						</div>
+						{{-- @if ($errors->any())
 						    <div class="alert alert-danger">
+
 						        <ul>
 						            @foreach ($errors->first() as $error)
 						                <li>{{ $error }}</li>
 						            @endforeach
 						        </ul>
 						    </div>
-						@endif
+						@endif --}}
 						<button type="submit" class="btn btn-primary" id="btn-save" ng-click="saveNewMember()" ng-disabled="frmcreatemember.$invalid">SAVE</button>
 					</div>
 				</div>
@@ -222,15 +228,9 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						@if ($errors->any())
-						    <div class="alert alert-danger">
-						        <ul>
-						            @foreach ($errors->all() as $error)
-						                <li>{{ $error }}</li>
-						            @endforeach
-						        </ul>
-						    </div>
-						@endif
+						<div id="error-edit" style="text-align: left; color: red">
+							
+						</div>
 						<button type="submit" class="btn btn-primary" id="btn-save" ng-click="saveEditMember(id)" ng-disabled="frmmember.$invalid">SAVE</button>
 					</div>
 				</div>
