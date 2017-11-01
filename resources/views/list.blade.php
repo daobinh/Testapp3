@@ -32,7 +32,6 @@
 			background-color: #f5f5f5;
 		}
 
-		}
 		
 	</style>
 </head>
@@ -63,7 +62,7 @@
 							</td>
 							<td>@{{member.age}}</td>
 							<td style="width: 15%">
-								<img style="width: 120px; height: 120px; margin: 0 auto" class="img-responsive"  ng-src="@{{member.photo}}">
+								<img style="width: 120px; height: 120px; margin: 0 auto; object-fit: contain; " class="img-responsive"  ng-src="@{{member.photo}}">
 							</td>
 							<td style="width: 5%;">
 								<div style="margin-top: 45%; margin-left: 15%">
