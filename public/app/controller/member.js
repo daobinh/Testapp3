@@ -9,7 +9,7 @@ app.directive('fileModel', ['$parse',function ($parse) {
 				scope.$apply(function(){				
 					modelSetter(scope,iElement[0].files[0])
 					$('#error').html('');
-					$('#modal-edit').html('');
+					$('#error-edit').html('');
 				});
 			});
 
