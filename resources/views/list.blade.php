@@ -27,6 +27,12 @@
 		textarea{
 			resize: none;
 		}
+		.sort:hover{
+			cursor: pointer;
+			background-color: #f5f5f5;
+		}
+
+		}
 		
 	</style>
 </head>
@@ -35,13 +41,13 @@
 		<h2>MEMBER</h2>
 		<button type="button" class="btn btn-primary" ng-click="create()"><i class="fa fa-plus" aria-hidden="true"></i></button>
 			<div class="" style="margin-top: 1%">
-				<table class="table table-hover table-responsive table-bordered">
+				<table class="table table-responsive table-bordered">
 					<thead>
 						<tr>
-							<th ng-click="propertyName ='id';sortBy('id')" >ID</th>
-							<th ng-click="propertyName ='name';sortBy('name')">NAME</th>
-							<th ng-click="propertyName ='address';sortBy('address')">ADDRESS</th>
-							<th ng-click="propertyName ='age';sortBy('age')">AGE</th>
+							<th class="sort" ng-click="propertyName ='id';sortBy('id')" >ID</th>
+							<th class="sort" ng-click="propertyName ='name';sortBy('name')">NAME</th>
+							<th class="sort" ng-click="propertyName ='address';sortBy('address')">ADDRESS</th>
+							<th class="sort" ng-click="propertyName ='age';sortBy('age')">AGE</th>
 							<th>PHOTO</th>
 							<th>ACTION</th>
 						</tr>

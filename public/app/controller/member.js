@@ -13,7 +13,6 @@ app.directive('fileModel', ['$parse',function ($parse) {
 				});
 			});
 
-
 		}
 	};
 }]);
@@ -34,6 +33,7 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
         	backdrop: 'static',
         });
         document.getElementById("frmcreate").reset();
+        $('#error').html('');
         $scope.member = null;
         $scope.files = null;
         $scope.myFile = null;
@@ -100,7 +100,7 @@ app.controller('MemberController',function ($scope,$http,API_URL) {
         	backdrop: 'static',
 
         });
-        
+        $('#error-edit').html('');
         $scope.myFile = null;
 		$scope.files = null;
 		$scope.frmcreatemember.$setPristine();
